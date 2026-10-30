@@ -7,6 +7,8 @@
 
 @media print { .fixed { position: fixed !important; inset: 0 !important; background: white !important; } }
 
+@media print { body { background: white !important; } .barcode-print { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 8mm; padding: 8mm; } .barcode-label { display: flex; min-height: 34mm; flex-direction: column; align-items: center; justify-content: center; border: 1px dashed #999; padding: 3mm; color: #111; } .barcode-label b { font-size: 10pt; } .barcode-label small { font-size: 9pt; } }
+
 /* Focused POS layout: quiet product browsing on the left, decisive checkout on the right. */
 .pos-shell { background: #f8f6f3; }
 .pos-shell section > .grid > button.panel { border-color: #eee5dc; box-shadow: none; border-radius: 18px; }
