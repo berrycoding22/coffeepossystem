@@ -17,6 +17,14 @@ export async function middleware(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user && request.nextUrl.pathname.startsWith("/dashboard")) return NextResponse.redirect(new URL("/login", request.url));
     if (user && request.nextUrl.pathname === "/login") return NextResponse.redirect(new URL("/dashboard", request.url));
+    if (user && request.nextUrl.pathname.startsWith("/dashboard")) {
+      const { data: profile } = await supabase.from("profiles").select("role,is_active").eq("id", user.id).maybeSingle();
+      if (!profile?.is_active) return NextResponse.redirect(new URL("/login?access=inactive", request.url));
+      const path = request.nextUrl.pathname;
+      const cashierPaths = ["/dashboard", "/dashboard/pos", "/dashboard/orders", "/dashboard/tables"];
+      const allowed = profile.role === "barista" ? path === "/dashboard/kitchen" : profile.role === "cashier" ? cashierPaths.some(item => path === item || path.startsWith(`${item}/`)) : true;
+      if (!allowed) return NextResponse.redirect(new URL(profile.role === "barista" ? "/dashboard/kitchen" : "/dashboard/pos", request.url));
+    }
   } catch {
     // A bad/missing deployment environment must not crash Vercel's edge middleware.
     return NextResponse.redirect(new URL("/login?configuration=invalid", request.url));
