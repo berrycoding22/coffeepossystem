@@ -1,0 +1,3 @@
+import { SalesReturnManager } from "@/components/sales/sales-return-manager";
+import { createClient } from "@/lib/supabase/server";
+export default async function ReturnsPage() { const supabase = await createClient(); const { data } = await supabase.from("orders").select("id,order_number,total_amount,completed_at,customer:customers(full_name),payment:payments(method,status),order_items(product_name,quantity)").eq("status", "completed").order("completed_at", { ascending: false }).limit(100); const orders = (data ?? []).map(order => ({ ...order, customer: Array.isArray(order.customer) ? order.customer[0] ?? null : order.customer, payment: Array.isArray(order.payment) ? order.payment[0] ?? null : order.payment })); return <SalesReturnManager orders={orders as never}/>; }
