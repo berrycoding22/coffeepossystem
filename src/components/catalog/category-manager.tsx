@@ -1,0 +1,14 @@
+"use client";
+import { FormEvent, useState } from "react";
+import { Plus, Trash2 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
+type Category = { id: string; name: string; khmer_name: string | null; is_active: boolean; sort_order: number };
+export function CategoryManager({ categories }: { categories: Category[] }) {
+  const [adding, setAdding] = useState(false); const router = useRouter();
+  async function addCategory(event: FormEvent<HTMLFormElement>) { event.preventDefault(); const form = new FormData(event.currentTarget); const { error } = await createClient().from("categories").insert({ name: String(form.get("name")).trim(), khmer_name: String(form.get("khmer_name")).trim() || null, sort_order: categories.length + 1 }); if (error) return toast.error(error.message); toast.success("Category created"); setAdding(false); router.refresh(); }
+  async function removeCategory(id: string) { if (!confirm("Archive this category?")) return; const { error } = await createClient().from("categories").update({ is_active: false }).eq("id", id); if (error) return toast.error(error.message); toast.success("Category archived"); router.refresh(); }
+  return <div className="p-5 md:p-9"><div className="mb-8 flex items-center justify-between"><div><p className="text-sm text-stone-500">Catalog setup</p><h1 className="text-3xl font-bold text-espresso">Categories</h1></div><button onClick={() => setAdding(!adding)} className="flex items-center gap-2 rounded-xl bg-espresso px-4 py-2.5 text-sm font-semibold text-white"><Plus className="size-4"/>Add category</button></div>{adding && <form onSubmit={addCategory} className="panel mb-6 grid gap-3 p-5 sm:grid-cols-3"><input required name="name" placeholder="English name" className="rounded-xl border px-3 py-2.5 outline-none focus:border-gold"/><input name="khmer_name" placeholder="Khmer name (optional)" className="rounded-xl border px-3 py-2.5 outline-none focus:border-gold"/><button className="rounded-xl bg-gold px-4 py-2.5 font-semibold text-white">Save category</button></form>}<div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{categories.map((category) => <article className="panel flex items-center gap-4 p-5" key={category.id}><span className="grid size-11 place-items-center rounded-xl bg-cream text-xl">☕</span><div className="min-w-0 flex-1"><b className="block truncate">{category.name}</b><span className="text-sm text-stone-500">{category.khmer_name || "No Khmer name"}</span></div><button title="Archive" onClick={() => removeCategory(category.id)} className="rounded-lg p-2 text-stone-400 hover:bg-red-50 hover:text-red-600"><Trash2 className="size-4"/></button></article>)}{!categories.length && <p className="text-stone-500">No categories yet.</p>}</div></div>;
+}

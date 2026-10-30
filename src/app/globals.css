@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base { * { @apply border-stone-200; } body { @apply min-h-screen bg-[#f7f4f0] text-stone-800 antialiased; font-family: Inter, "Noto Sans Khmer", "Segoe UI", sans-serif; } }
+@layer components { .panel { @apply rounded-2xl border border-white/70 bg-white/95 shadow-soft backdrop-blur; } .nav-item { @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-stone-500 transition duration-200 hover:bg-[#f4ede5] hover:text-espresso; } .nav-item-active { @apply bg-gradient-to-r from-espresso to-[#6b4039] text-white shadow-lg shadow-[#4b2e2b]/15 hover:text-white; } }
+
+@media print { .fixed { position: fixed !important; inset: 0 !important; background: white !important; } }

@@ -1,0 +1,1 @@
+export default function DashboardLoading() { return <div className="animate-pulse p-5 md:p-9"><div className="h-8 w-64 rounded bg-stone-200"/><div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-32 rounded-2xl bg-stone-200"/>)}</div><div className="mt-6 h-72 rounded-2xl bg-stone-200"/></div>; }

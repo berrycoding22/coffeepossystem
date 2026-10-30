@@ -1,0 +1,3 @@
+import { ProductManager } from "@/components/catalog/product-manager";
+import { createClient } from "@/lib/supabase/server";
+export default async function ProductsPage() { const supabase = await createClient(); const [{ data: products }, { data: categories }] = await Promise.all([supabase.from("products").select("id,name,khmer_name,sku,base_price,is_available,categories(name)").eq("is_active", true).order("created_at", { ascending: false }), supabase.from("categories").select("id,name").eq("is_active", true).order("sort_order")]); return <ProductManager products={(products ?? []) as never} categories={categories ?? []}/>; }

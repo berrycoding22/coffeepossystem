@@ -1,0 +1,3 @@
+import { ArrowUpRight, type LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+export function MetricCard({ label, value, note, icon: Icon, accent = "bg-espresso" }: { label: string; value: string; note: string; icon: LucideIcon; accent?: string }) { return <article className="panel p-5"><div className="flex justify-between"><div><p className="text-sm font-medium text-stone-500">{label}</p><p className="mt-2 text-2xl font-bold text-espresso">{value}</p></div><span className={cn("grid size-10 place-items-center rounded-xl text-white", accent)}><Icon className="size-5"/></span></div><p className="mt-4 flex items-center gap-1 text-xs font-medium text-emerald-600"><ArrowUpRight className="size-3"/>{note}</p></article>; }

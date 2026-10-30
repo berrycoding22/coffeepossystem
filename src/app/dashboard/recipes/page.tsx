@@ -1,0 +1,3 @@
+import { RecipeManager } from "@/components/inventory/recipe-manager";
+import { createClient } from "@/lib/supabase/server";
+export default async function RecipesPage() { const supabase = await createClient(); const [{ data: products }, { data: ingredients }, { data: recipes }] = await Promise.all([supabase.from("products").select("id,name").eq("is_active", true).order("name"), supabase.from("ingredients").select("id,name,unit").eq("is_active", true).order("name"), supabase.from("recipes").select("id,quantity,products(name),ingredients(name,unit)")]); return <RecipeManager products={products ?? []} ingredients={ingredients ?? []} recipes={(recipes ?? []) as never}/>; }

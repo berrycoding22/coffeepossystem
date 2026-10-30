@@ -1,0 +1,3 @@
+"use client";
+import { useEffect } from "react";
+export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) { useEffect(() => { console.error(error); }, [error]); return <html><body className="grid min-h-screen place-items-center bg-cream p-6"><section className="panel max-w-md p-8 text-center"><p className="text-sm text-stone-500">CoffeeFlow POS</p><h1 className="mt-2 text-2xl font-bold text-espresso">Something went wrong</h1><p className="mt-3 text-sm text-stone-500">Please try again. If this keeps happening, contact your system administrator.</p><button onClick={reset} className="mt-6 rounded-xl bg-espresso px-5 py-2.5 font-semibold text-white">Try again</button></section></body></html>; }
